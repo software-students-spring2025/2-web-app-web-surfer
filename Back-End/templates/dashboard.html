@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Web Surfer{% endblock %}
+
+{% block styles %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        background: #f5f5f5;
+        margin-bottom: 20px;
+    }
+    
+    .building-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        padding: 20px;
+    }
+    
+    .building-card {
+        background: blue;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .search-button {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+    }
+    
+    .building-card-link {
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .building-card {
+        background: #0066ff;
+        color: black;
+        transition: transform 0.2s;
+    }
+    
+    .building-card:hover {
+        transform: translateY(-5px);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <div class="search-bar">
+            <form action="{{ url_for('search') }}" method="get">
+                <input type="text" name="q" placeholder="Search buildings...">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+        <div class="user-info">
+            <span>Welcome, {{ user.username }}</span>
+            <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+        </div>
+    </div>
+
+    <div class="building-list">
+        {% if buildings %}
+            {% for building in buildings %}
+            <a href="{{ url_for('building_detail', building_id=building.id) }}" class="building-card-link">
+                <div class="building-card">
+                    <h3>{{ building.name }}</h3>
+                    <p>Address: {{ building.address }}</p>
+                    <p>Units: {{ building.num_unit }}</p>
+                    <p>About: {{ building.about_info }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        {% else %}
+            <p class="no-buildings">No buildings available</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

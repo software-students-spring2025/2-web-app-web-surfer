@@ -1,0 +1,258 @@
+{% extends "base.html" %}
+
+{% block title %}{{ building.name }} - Details{% endblock %}
+
+{% block styles %}
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+    
+    .back-button {
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+    
+    .building-detail {
+        background: blueviolet;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .section {
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid #333;
+    }
+    
+    .section:last-child {
+        border-bottom: none;
+    }
+    
+    .section-title {
+        color: #333;
+        margin-bottom: 15px;
+    }
+    
+    .feature-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 15px;
+    }
+    
+    .feature-item {
+        background-color: blueviolet;
+        margin: 5px;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    
+    .feature-item.active {
+        background-color: #4CAF50;
+        color: blueviolet;
+    }
+    
+    .feature-item i {
+        margin-right: 8px;
+    }
+
+    .building-name {
+        font-size: 36px;
+        font-weight: bold;
+        color: #2c3e50;  /* 深蓝色 */
+        margin-bottom: 20px;
+        text-shadow: none;  /* 移除文字阴影 */
+    }
+
+    .building-info {
+        background-color: white;
+        padding: 25px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .info-item {
+        font-size: 16px;
+        color: #2c3e50;  /* 深蓝色文本 */
+        margin: 10px 0;
+        line-height: 1.6;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="header">
+        <a href="{{ url_for('dashboard') }}" class="back-button">Back to List</a>
+        <div class="user-actions">
+            <button id="wishlistBtn" class="wishlist-btn" data-building-id="{{ building.id }}">
+                <i class="fas fa-heart" id="heartIcon"></i>
+                Add to Wishlist
+            </button>
+            <span>{{ user.username }}</span>
+        </div>
+    </div>
+
+    <div class="building-detail">
+        <div class="section">
+            <h2 class="section-title">Building Basic Information</h2>
+            <div class="building-info">
+                <h1 class="building-name">{{ building.name }}</h1>
+                <p class="info-item">Address: {{ building.address }}</p>
+                <p class="info-item">Number of Units: {{ building.num_unit }}</p>
+                <p class="info-item">About: {{ building.about_info }}</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Building Amenities</h2>
+            <p>Doorman: {{ amenities.doorman }}</p>
+            <p>Bike Room: {{ amenities.bikeroom }}</p>
+            <p>Elevator: {{ amenities.elevator }}</p>
+            <p>Laundry: {{ amenities.laundry }}</p>
+            <p>Gym: {{ amenities.gym }}</p>
+            <p>Package Room: {{ amenities.packageroom }}</p>
+            <p>Parking: {{ amenities.parking }}</p>
+            <p>Library: {{ amenities.library }}</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Home Features</h2>
+            <p>Central Air: {{ features.centralair }}</p>
+            <p>Dishwasher: {{ features.dishwasher }}</p>
+            <p>Hardwood Floor: {{ features.hardwoodfloor }}</p>
+            <p>View: {{ features.view }}</p>
+            <p>Private Outdoor: {{ features.privateoutdoor }}</p>
+            <p>Washer/Dryer: {{ features.washerdryer }}</p>
+            <p>Refrigerator: {{ features.fridge }}</p>
+            <p>Oven: {{ features.oven }}</p>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Rental Policies</h2>
+            <p>Pets Allowed: {{ policies.pet_allowed }}</p>
+            <p>Guarantor Accepted: {{ policies.guarantor_accepted }}</p>
+            <p>Smoke Free: {{ policies.smoke_free }}</p>
+        </div>
+    </div>
+
+    <div class="debug-info">
+        <p>Building: {{ building }}</p>
+        <p>Amenities: {{ amenities }}</p>
+        <p>Features: {{ features }}</p>
+        <p>Policies: {{ policies }}</p>
+    </div>
+</div>
+
+<style>
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .section {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: white;
+        border-radius: 4px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .section-title {
+        font-size: 18px;
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    p {
+        font-size: 14px;
+        margin: 5px 0;
+        color: #666;
+    }
+    
+    .back-button {
+        padding: 8px 16px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+    }
+
+    .user-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .wishlist-btn {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    .wishlist-btn.active {
+        background: #ff4d4d;
+        color: white;
+        border-color: #ff4d4d;
+    }
+
+    .wishlist-btn.active i {
+        color: white;
+    }
+</style>
+
+<!-- 添加 Font Awesome 图标库 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+<script>
+document.getElementById('wishlistBtn').addEventListener('click', async function() {
+    const buildingId = this.getAttribute('data-building-id');
+    try {
+        const response = await fetch('/api/wishlist/toggle', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                building_id: buildingId
+            })
+        });
+        
+        const data = await response.json();
+        if (data.success) {
+            const btn = document.getElementById('wishlistBtn');
+            const icon = document.getElementById('heartIcon');
+            
+            if (data.added) {
+                btn.classList.add('active');
+                btn.innerHTML = '<i class="fas fa-heart" id="heartIcon"></i> Added to Wishlist';
+            } else {
+                btn.classList.remove('active');
+                btn.innerHTML = '<i class="fas fa-heart" id="heartIcon"></i> Add to Wishlist';
+            }
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+</script>
+{% endblock %} 
